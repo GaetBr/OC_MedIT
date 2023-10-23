@@ -26,15 +26,32 @@ function oceanwp_child_enqueue_parent_style() {
 	// Load the stylesheet
 	wp_enqueue_style( 'child-style', get_stylesheet_directory_uri() . '/style.css', array( 'oceanwp-style' ), $version );
 
+    // Enqueue jQuery (si ce n'est pas déjà inclus par un autre script)
+    if (!wp_script_is('jquery', 'enqueued')) {
+        wp_enqueue_script('jquery');
+    }
+    // Enqueue JS
+    wp_enqueue_script('custom-script', get_stylesheet_directory_uri() . '/scripts/script.js', array('jquery'), '1.0', true); 
+
 }
 add_action( 'wp_enqueue_scripts', 'oceanwp_child_enqueue_parent_style' );
 
 
+/*************************************************************************/
+/******************************* SITE ***********************************/
 
-
-function contact_btn( $items, $args ) {
-	$items .= '<a href="/contact" class="contact-btn">Nous contacter</a>';
-	return $items;
+function contact_btn_menu( $items, $args ) {
+    $items .= '<a href="./contact" class="contact-btn">Nous contacter</a>';
+    return $items;
 }
+add_filter( 'wp_nav_menu_items', 'contact_btn_menu', 10, 2 );
 
-add_filter( 'wp_nav_menu_items', 'contact_btn', 10, 2 );
+// Création du shortcode à ajouter dans le contenu si besoin
+function contact_btn_shortcode() {
+    // Code du bouton
+    $string .= '<a href="./contact" class="contact-btn">Nous contacter</a>';
+
+    // On retourne le code
+    return $string;
+}
+add_shortcode('contact', 'contact_btn_shortcode');

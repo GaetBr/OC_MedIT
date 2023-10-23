@@ -16,7 +16,25 @@ Version: 1.0
     background-color:white;
     padding:6px 16px;
     border-radius:6px;
+    margin: 0px 0 0 15px;
 }
+
+.contact-btn:hover{
+    color: #28BABF;
+}
+
+header .contact-btn{
+    margin: 23px 0 0 15px;
+}
+
+footer .contact-btn{
+    margin: -5px 0 0 0px;
+}
+
+footer .contact-btn:hover{
+    color: black !important;
+}
+
 .popup-overlay{
     position:fixed;
     width:100%;
@@ -25,7 +43,7 @@ Version: 1.0
     display:flex;
     justify-content: center;
     align-items:center;
-    z-index: 999; /* à enlever */
+    z-index: 999; 
     top:0;
     left:0;
 }

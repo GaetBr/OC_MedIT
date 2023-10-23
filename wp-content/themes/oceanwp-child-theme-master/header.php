@@ -63,7 +63,23 @@ $lien=get_field('lien_google_maps', 161);
 			<div class="popup-address">
 				<p><b>Le lieu</b></p>
 				<?php echo $lieu; ?>
-				<a class="popup-link" href="<?php echo $lien; ?>" target="_blank">Voir sur Google Maps</a>
+				<?php
+				// Débug
+				// var_dump($lien);
+
+				// $lien est une chaîne de caractères
+				if (is_string($lien)) {
+    				echo '<a class="popup-link" href="' . esc_url($lien) . '" target="_blank">Voir sur Google Maps</a>';
+				} elseif (is_array($lien)) {
+    				// Si $lien est un tableau, utilise les clés 'url' et 'target' s'il sont présents.
+    				$url = isset($lien['url']) ? esc_url($lien['url']) : '#';
+    				$target = isset($lien['target']) ? esc_attr($lien['target']) : '_blank';
+    				echo '<a class="popup-link" href="' . $url . '" target="' . $target . '">Voir sur Google Maps</a>';
+				} else {
+					// Gère les autres cas si nécessaire
+					echo 'Lien non valide';
+				}
+				?>
 			</div>
 			<div class="popup-address">
 				<p><b>La date</b></p>
@@ -73,37 +89,7 @@ $lien=get_field('lien_google_maps', 161);
 		<p class="popup-informations">Vous souhaitez plus d'informations concernant cet événement ?</p>
 		<?php
 		// On insère le formulaire de demandes de renseignements
-		do_shortcode('[contact-form-7 id="910" title="Formulaire salon New York"]');
+		echo do_shortcode('[contact-form-7 id="910" title="Formulaire salon New York"]');
 		?>
 	</div>
 </div>
-
-<!-- Code pour fermer la popup -->
-
-<script>
-$('.popup-close').click(function(){
-	$(this).parent().hide();
-})
-</script>
-
-
-<!-- Ajout d'un bouton contact au menu -->
-
-<?php
-
-/**
- * Shortcode pour ajouter un bouton
- */
-function contact_btn() {
-
-	// Code du bouton
-	$string .= '<a href="/contact" class="contact-btn">Nous contacter</a>';
-
-	// On retourne le code
-	return $string;
-
-}
-// On publie le shortcode
-add_shortcode('contact', 'contact_btn');
-
-?>
